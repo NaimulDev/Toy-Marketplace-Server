@@ -37,6 +37,19 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/toySearchText/:text", async (req, res) => {
+      const searchText = req.params.text;
+      const result = await toyCollection
+        .find({
+          $or: [
+            { name: { $regex: searchText, $options: "i" } },
+            { email: { $regex: searchText, $options: "i" } },
+          ],
+        })
+        .toArray();
+      res.send(result);
+    });
+
     // one items read
     app.get("/toyProducts/:id", async (req, res) => {
       const id = req.params.id;
@@ -60,8 +73,7 @@ async function run() {
       const toyBody = req.body;
       const updateDoc = {
         $set: {
-          name: toyBody.name,
-          sellerName: toyBody.sellerName,
+          quantity: toyBody.quantity,
           price: toyBody.price,
           description: toyBody.description,
         },
