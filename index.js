@@ -50,6 +50,17 @@ async function run() {
       res.send(result);
     });
 
+    /* Ascending  Get*/
+    app.get("/ascendingPrice", async (req, res) => {
+      const result = await toyCollection.find().sort({ price: 1 }).toArray();
+      res.send(result);
+    });
+    /* Descending  Get*/
+    app.get("/descendingPrice", async (req, res) => {
+      const result = await toyCollection.find().sort({ price: -1 }).toArray();
+      res.send(result);
+    });
+
     // one items read
     app.get("/toyProducts/:id", async (req, res) => {
       const id = req.params.id;
