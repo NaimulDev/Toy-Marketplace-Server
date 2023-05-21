@@ -23,7 +23,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
     const toyCollection = client.db("ToyTown").collection("toyProducts");
 
@@ -50,14 +50,23 @@ async function run() {
       res.send(result);
     });
 
-    /* Ascending  Get*/
-    app.get("/ascendingPrice", async (req, res) => {
-      const result = await toyCollection.find().sort({ price: 1 }).toArray();
+    //sub category rout read
+    app.get("/softToys", async (req, res) => {
+      const query = { category: "Soft Toys" };
+      const cursor = toyCollection.find(query);
+      const result = await cursor.toArray();
       res.send(result);
     });
-    /* Descending  Get*/
-    app.get("/descendingPrice", async (req, res) => {
-      const result = await toyCollection.find().sort({ price: -1 }).toArray();
+    app.get("/rubberwood", async (req, res) => {
+      const query = { category: "Rubberwood" };
+      const cursor = toyCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+    app.get("/girlsCloth", async (req, res) => {
+      const query = { category: "Girl's Cloth" };
+      const cursor = toyCollection.find(query);
+      const result = await cursor.toArray();
       res.send(result);
     });
 
@@ -93,23 +102,14 @@ async function run() {
       res.send(result);
     });
 
-    //sub category rout read
-    app.get("/softToys", async (req, res) => {
-      const query = { category: "Soft Toys" };
-      const cursor = toyCollection.find(query);
-      const result = await cursor.toArray();
+    /* Ascending  Get*/
+    app.get("/ascendingPrice", async (req, res) => {
+      const result = await toyCollection.find().sort({ price: 1 }).toArray();
       res.send(result);
     });
-    app.get("/rubberwood", async (req, res) => {
-      const query = { category: "Rubberwood" };
-      const cursor = toyCollection.find(query);
-      const result = await cursor.toArray();
-      res.send(result);
-    });
-    app.get("/girlsCloth", async (req, res) => {
-      const query = { category: "Girl's Cloth" };
-      const cursor = toyCollection.find(query);
-      const result = await cursor.toArray();
+    /* Descending  Get*/
+    app.get("/descendingPrice", async (req, res) => {
+      const result = await toyCollection.find().sort({ price: -1 }).toArray();
       res.send(result);
     });
 
@@ -141,4 +141,3 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`kids Toy server site Port: ${port}`);
 });
-// cluster0.guqonkt.mongodb.net;
